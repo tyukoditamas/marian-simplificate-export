@@ -38,26 +38,35 @@ public class InvoiceReaderCsv {
                 InvoiceData inv = new InvoiceData();
 
 
-                inv.setAwb(get(row, idx, "Număr de urmărire expediere"));
-                inv.setDate(get(row, idx, "Stat expeditor"));
+                inv.setAwb(get(row, idx, "TRACKING"));
+                inv.setDate(get(row, idx, "DATE"));
 
-                inv.setExporterName(get(row, idx, "Companie sau nume expeditor"));
-                inv.setExporterAddress(get(row, idx, "Linie adresă 1 pentru expeditor"));
-                inv.setExporterCity(get(row, idx, "Oraș expeditor"));
-                inv.setExporterCountry(get(row, idx, "Țară expeditor"));
-                inv.setExporterPostalCode(get(row, idx, "Cod poștal expeditor"));
+                inv.setExporterName(get(row, idx, "EXPORTER"));
+                inv.setExporterAddress(get(row, idx, "DIR1S"));
+                inv.setExporterCity(get(row, idx, "DIR2S"));
 
-                inv.setImporterName(get(row, idx, "Destinatar – Companie sau nume"));
-                inv.setImporterAddress(get(row, idx, "Destinație expediere – Linie adresă 1"));
-                inv.setImporterCity(get(row, idx, "Destinatar – Localitate"));
-                inv.setImporterCountry(get(row, idx, "Țară sau teritoriu destinatar"));
-                inv.setImporterPostalCode(get(row, idx, "Cod poștal destinatar"));
+                String dir3s = get(row, idx, "DIR3S");
+                String[] parts1 = dir3s.trim().split("\\s+");
 
-                inv.setGoodsDescription(get(row, idx, "Descriere bunuri"));
-                inv.setValue(get(row, idx, "Totaluri linie factură"));
-                inv.setCurrency(get(row, idx, "Cod monedă"));
-                inv.setNumberOfPackages(get(row, idx, "Nr. colete din expediere"));
-                inv.setWeightGross(get(row, idx, "Greutate reală expediere"));
+                inv.setExporterCountry(parts1[1]);
+                inv.setExporterPostalCode(parts1[0]);
+
+                inv.setImporterName(get(row, idx, "IMPORTER"));
+                inv.setImporterAddress(get(row, idx, "DIR1"));
+                inv.setImporterCity(get(row, idx, "DIR2"));
+
+                String dir3 = get(row, idx, "DIR3");
+                String[] parts2 = dir3.trim().split("\\s+");
+                String countryCode = parts2[parts2.length - 1];
+
+                inv.setImporterCountry(countryCode);
+                //inv.setImporterPostalCode(get(row, idx, "Cod poștal destinatar"));
+
+                inv.setGoodsDescription(get(row, idx, "DESCRIPTION"));
+                inv.setValue(get(row, idx, "VALUE"));
+                inv.setCurrency(get(row, idx, "CURRENCY"));
+                inv.setNumberOfPackages(get(row, idx, "PARTS"));
+                inv.setWeightGross(get(row, idx, "WEIGHT"));
                 inv.setCountryItineraryCodes(inv.getExporterCountry() + ";" + inv.getImporterCountry());
 
 
